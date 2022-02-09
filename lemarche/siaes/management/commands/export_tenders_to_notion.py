@@ -12,8 +12,6 @@ class Command(BaseCommand):
     """
     Populates BOAMP tenders on notion
 
-    Note: Only on Siae who have coords, filter only on Siae not updated by the API since a two months
-
     Usage: poetry run python manage.py export_tenders_to_notion
     Usage: poetry run python manage.py export_tenders_to_notion --limit 10
     Usage: poetry run python manage.py export_tenders_to_notion --force
@@ -37,19 +35,16 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        # self.stdout_messages_info(["Populating API ZRR...", f"Found {len(siae_list)} Siae"])
+        # self.stdout_messages_info(["Populating API BOAMP...", f"Found {len(0)} Tenders"])
 
-        # count_siae_to_update = 0
         client = get_default_client()
         try:
             tenders_to_export = []
             with open("offers_saved.json") as json_file:
                 data_tenders = json.load(json_file)
                 for tender in data_tenders:
-                    # update siae from API
                     tender = self.export_tender_to_notion(client, tender)
                     tenders_to_export.append(tender)
-                    # log progress
                     count_tenders_to_export = len(tenders_to_export)
                     if (count_tenders_to_export % 50) == 0:
                         self.stdout_info(f"{count_tenders_to_export}...")
@@ -61,7 +56,6 @@ class Command(BaseCommand):
                 self.stdout_error("exceeded the requests limit for today (5000/per day)")
         finally:
             client.close()
-            # we still save siaes zrr status
 
         self.stdout_messages_sucess(
             [
@@ -72,7 +66,6 @@ class Command(BaseCommand):
         )
 
     def export_tender_to_notion(self, client, tender):
-        # call api is in zrr
         self.success_count["tenders_found"] += 1
         properties = {
             "Name": {"title": [{"text": {"content": tender.get("OBJET", {}).get("TITRE_MARCHE")}}]},
