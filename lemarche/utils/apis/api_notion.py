@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime
 
 import httpx
 from django.conf import settings
@@ -15,7 +16,7 @@ TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S"  # "2016-12-31T00:00:00+01:00"  # timezon
 BASE_URL = "https://api.notion.com/v1/"
 
 headers = {
-    "Authorization": f"Bearer {settings.NOTION_TOKEN_API}",
+    "Authorization": f"Bearer {settings.NOTION_API_TOKEN}",
     "Content-Type": "application/json",
     "Notion-Version": settings.NOTION_VERSION_API,
 }
@@ -59,7 +60,7 @@ def create_block_code(content: dict):
                 {
                     "type": "text",
                     "text": {
-                        "content": json.dumps(content, indent=4),
+                        "content": json.dumps(content, indent=2)[:2000],
                     },
                 }
             ],
@@ -68,5 +69,12 @@ def create_block_code(content: dict):
     }
 
 
-def create_text_property(name, content):
-    return {"rich_text": [{"text": {"content": content}}]}
+def create_text_property(content: str):
+    return {"rich_text": [{"text": {"content": content or ""}}]}
+
+
+def create_date_property(start: datetime, end: datetime = None):
+    notion_property = {"date": {"start": start.isoformat()}}
+    if end:
+        notion_property["date"] |= {"end": end.isoformat()}
+    return notion_property

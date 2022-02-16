@@ -58,7 +58,7 @@ def get_offers_list(client=None):
     saved_data = []
     try:
         # refine.criteres=sociaux
-        r = client.get(BASE_URL, params={"refine.dateparution": "2022/02"})
+        r = client.get(BASE_URL, params={"refine.dateparution": "2022/02", "refine.etat": "INITIAL"})
         r.raise_for_status()
         data = r.json()
         # add cursor to get all offers if "nbItemsRetournes": 1000 < "nbItemsExistants": 3116
