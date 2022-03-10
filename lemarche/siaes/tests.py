@@ -1,9 +1,12 @@
+from bs4 import BeautifulSoup
 from django.test import TestCase
+from django.urls import reverse
 
 from lemarche.sectors.factories import SectorFactory
 from lemarche.siaes.factories import SiaeFactory, SiaeLabelFactory, SiaeOfferFactory
 from lemarche.siaes.models import Siae, SiaeUser
-from lemarche.users.factories import UserFactory
+from lemarche.users.factories import DEFAULT_PASSWORD, UserFactory
+from lemarche.users.models import User
 
 
 class SiaeModelTest(TestCase):
@@ -218,3 +221,72 @@ class SiaeModelQuerysetTest(TestCase):
 
     # def test_annotate_with_user_favorite_list_ids(self):
     # see favorites > tests.py
+
+
+class SiaeAdminTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user_siae = UserFactory(kind=User.KIND_SIAE)
+        cls.user_staff = UserFactory(kind=User.KIND_ADMIN, is_staff=True, is_superuser=True)
+        cls.siae_imported = SiaeFactory(source=Siae.SOURCE_ASP)
+        cls.siae_created = SiaeFactory(source=Siae.SOURCE_STAFF_C4_CREATED)
+
+    def test_only_staff_user_can_access_admin(self):
+        self.client.login(email=self.user_siae.email, password=DEFAULT_PASSWORD)
+        url = reverse("admin:index")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue("/admin/login/" in response.url)
+
+        self.client.login(email=self.user_staff.email, password=DEFAULT_PASSWORD)
+        url = reverse("admin:index")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_staff_user_can_create_siae(self):
+        self.client.login(email=self.user_staff.email, password=DEFAULT_PASSWORD)
+        url = reverse("admin:siaes_siae_add")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, "html.parser")
+        name_input = soup.find("input", id="id_name")
+        slug_input = soup.find("input", id="id_slug")
+        self.assertTrue(name_input.has_attr("required"))  # required
+        self.assertEqual(slug_input, None)  # readonly
+        form_data = {
+            "name": "Created by staff",
+            "siret": "12345678910111",
+            "kind": "EI",
+            "address": "20 Avenue de Ségur",
+        }
+        response = self.client.post(url, data=form_data)
+        self.assertEqual(response.status_code, 302)  # 201?
+        self.assertEqual(Siae.objects.count(), 2 + 1)
+        siae_created_2 = Siae.objects.order_by("id").last()
+        self.assertEqual(siae_created_2.source, Siae.SOURCE_STAFF_C4_CREATED)
+
+    def test_staff_user_cannot_update_imported_siae(self):
+        self.client.login(email=self.user_staff.email, password=DEFAULT_PASSWORD)
+        url = reverse("admin:siaes_siae_change", args=[self.siae_imported.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, "html.parser")
+        name_input = soup.find("input", id="id_name")
+        brand_input = soup.find("input", id="id_brand")
+        address_input = soup.find("textarea", id="id_address")
+        self.assertEqual(name_input, None)  # readonly
+        self.assertEqual(brand_input, None)  # readonly
+        self.assertEqual(address_input, None)  # readonly
+
+    def test_staff_user_can_update_created_siae(self):
+        self.client.login(email=self.user_staff.email, password=DEFAULT_PASSWORD)
+        url = reverse("admin:siaes_siae_change", args=[self.siae_created.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, "html.parser")
+        name_input = soup.find("input", id="id_name")
+        brand_input = soup.find("input", id="id_brand")
+        address_input = soup.find("textarea", id="id_address")
+        self.assertEqual(name_input, None)  # readonly
+        self.assertTrue(brand_input.has_attr("name"))  # editable
+        self.assertTrue(address_input.has_attr("name"))  # editable
