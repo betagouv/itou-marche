@@ -203,9 +203,11 @@ class SiaePerimeterSearchFilterTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # create the Perimeters
+        PerimeterFactory(name="France entière", slug="france", kind=Perimeter.KIND_COUNTRY)
         auvergne_rhone_alpes = PerimeterFactory(
             name="Auvergne-Rhône-Alpes", kind=Perimeter.KIND_REGION, insee_code="R84"
         )
+        PerimeterFactory(name="Isère", kind=Perimeter.KIND_DEPARTMENT, insee_code="38", region_code="84")
         cls.grenoble_perimeter = PerimeterFactory(
             name="Grenoble",
             kind=Perimeter.KIND_CITY,
@@ -224,7 +226,6 @@ class SiaePerimeterSearchFilterTest(TestCase):
             post_codes=[38410],
             coords=Point(5.8862, 45.1106),
         )
-        PerimeterFactory(name="Isère", kind=Perimeter.KIND_DEPARTMENT, insee_code="38", region_code="84")
         # create the Siaes
         SiaeFactory(
             city=cls.grenoble_perimeter.name,
@@ -338,6 +339,12 @@ class SiaePerimeterSearchFilterTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("perimeter_name", form.errors.keys())
         self.assertIn("Périmètre inconnu", form.errors["perimeter_name"][0])
+
+    def test_search_perimeter_country(self):
+        form = SiaeSearchForm({"perimeter": "france", "perimeter_name": "France entière"})
+        perimeter = form.get_perimeter()
+        qs = form.filter_queryset(perimeter)
+        self.assertEqual(qs.count(), 3)
 
     def test_search_perimeter_region(self):
         form = SiaeSearchForm(

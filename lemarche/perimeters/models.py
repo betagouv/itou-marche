@@ -15,10 +15,12 @@ class Perimeter(models.Model):
     KIND_CITY = "CITY"
     KIND_DEPARTMENT = "DEPARTMENT"
     KIND_REGION = "REGION"
+    KIND_COUNTRY = "COUNTRY"
     KIND_CHOICES = (
         (KIND_CITY, "Commune"),
         (KIND_DEPARTMENT, "Département"),
         (KIND_REGION, "Région"),
+        (KIND_COUNTRY, "Pays"),
     )
     DEPARTMENT_CHOICES = DEPARTMENTS_PRETTY.items()
     REGION_CHOICES = REGIONS.items()

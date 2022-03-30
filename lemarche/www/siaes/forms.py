@@ -178,6 +178,8 @@ class SiaeSearchForm(forms.Form):
             qs = qs.in_department(department_code=perimeter.insee_code)
         elif perimeter.kind == Perimeter.KIND_REGION:
             qs = qs.in_region(region_name=perimeter.name)
+        elif perimeter.kind == Perimeter.KIND_COUNTRY:
+            qs = qs.in_country()
         else:
             # unknown perimeter kind, don't filter
             pass

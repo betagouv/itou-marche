@@ -183,6 +183,9 @@ class SiaeQuerySet(models.QuerySet):
         """Only return siaes who have at least 1 SiaeClientReference."""
         return self.filter(client_references__isnull=False).distinct()
 
+    def in_country(self):
+        return self.filter(geo_range=GEO_RANGE_COUNTRY)
+
     def in_region(self, **kwargs):
         if "region_name" in kwargs:
             return self.filter(region=kwargs["region_name"])

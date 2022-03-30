@@ -43,9 +43,8 @@ class TenderMatchingTest(TestCase):
     def setUpTestData(cls):
         cls.sectors = [SectorFactory() for i in range(10)]
         cls.perimeters = [PerimeterFactory(department_code="75"), PerimeterFactory()]
-        # by default is Paris
+        # create 2 Siae in Paris
         coords_paris = Point(48.86385199985207, 2.337071483848432)
-
         siae_one = SiaeFactory(
             is_active=True, geo_range=GEO_RANGE_CUSTOM, coords=coords_paris, geo_range_custom_distance=100
         )
@@ -62,7 +61,7 @@ class TenderMatchingTest(TestCase):
         self.assertEqual(len(siae_found_list), 2)
 
     def test_with_siae_country(self):
-        # add Siae with geo_range_country
+        # add Siae with geo_range COUNTRY
         tender = TenderFactory(sectors=self.sectors, perimeters=self.perimeters)
         siae_country = SiaeFactory(is_active=True, geo_range=GEO_RANGE_COUNTRY)
         siae_country.sectors.add(self.sectors[0])
@@ -70,7 +69,7 @@ class TenderMatchingTest(TestCase):
         self.assertEqual(len(siae_found_list), 3)
 
     def test_with_siae_department(self):
-        # add Siae with geo_range_country
+        # add Siae with geo_range DEPARTMENT
         tender = TenderFactory(sectors=self.sectors, perimeters=self.perimeters)
         siae_department = SiaeFactory(is_active=True, department="75", geo_range=GEO_RANGE_DEPARTMENT)
         siae_department.sectors.add(self.sectors[0])
