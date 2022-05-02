@@ -1,0 +1,27 @@
+{% comment %}
+    takes two arguments : form_field and form_group_class
+{% endcomment %}
+
+
+<div class="{% if form_group_class %}{{form_group_class}}{% else %}form-group{% endif %}">
+	{{ form_field.label_tag }}
+	<ul class="list-group c-list-group-collapse c-list-group-form">
+			{% for pk, choices in form_field.field.widget.choices %}
+			<li class="list-group-item list-group-item-action">
+					<a data-toggle="collapse" href="#id_{{form_field.name}}_{{ forloop.counter0 }}" role="button" aria-expanded="false" aria-controls="id_{{form_field.name}}_{{ forloop.counter0 }}">{{pk}}</a>
+					<div class="collapse" id="id_{{form_field.name}}_{{ forloop.counter0 }}">
+							<ul>
+									{% for pk, choice in choices %}
+									<li>
+											<div class="custom-control custom-checkbox">
+													<input id="id_{{form_field.name}}_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" name="id_{{form_field.name}}_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" type="{{form.presta_type.field.widget.input_type}}" value="{{pk}}" class="custom-control-input" />
+													<label for="id_{{form_field.name}}_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" class="custom-control-label">{{ choice }}</label>
+											</div>
+									</li>
+									{% endfor %}
+							</ul>
+					</div>
+			</li>
+			{% endfor %}
+	</ul>
+</div>

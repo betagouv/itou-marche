@@ -2,50 +2,50 @@
 {% load static bootstrap4 get_verbose_name %}
 
 {% block content_siae_form %}
-<form method="POST" action="" class="mb-3 mb-lg-5">
+<form method="POST" action="" class="pt-3 pt-lg-5">
     {% csrf_token %}
 
     {% bootstrap_form_errors form type="all" %}
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <h3>Contact commercial affiché sur votre fiche commerciale</h3>
-        </div>
-    </div>
-
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    {% bootstrap_field form.contact_first_name %}
-                    {% bootstrap_field form.contact_last_name %}
-                    {% bootstrap_field form.contact_website %}
-                    {% bootstrap_field form.contact_email %}
-                    {% bootstrap_field form.contact_phone %}
-                    {% bootstrap_field form.contact_social_website %}
-                </fieldset>
+    <fieldset>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <legend>Contact commercial affiché sur votre fiche commerciale</legend>
             </div>
         </div>
-        <div class="col-12 col-lg-4">
-            <div class="alert alert-info mt-3 mt-lg-0" role="alert">
-                <p class="mb-1">
-                    <i class="ri-information-line ri-lg"></i>
-                    <strong>Contact commercial</strong>
-                </p>
-                <p class="mb-0">
-                    Les informations de contact seront mis à disposition des acheteurs afin de leur permettre de vous contacter facilement.
-                </p>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                {% bootstrap_field form.contact_first_name show_label=True %}
+                {% bootstrap_field form.contact_last_name show_label=True %}
+                {% bootstrap_field form.contact_website %}              
+                <div class="form-row">
+                    {% bootstrap_field form.contact_email show_label=True form_group_class="form-group col-12 col-md-6" %}
+                    {% bootstrap_field form.contact_phone show_label=True form_group_class="form-group col-12 col-md-6" %}
+                </div>
+                {% bootstrap_field form.contact_social_website %}
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="c-form-conseil">
+                    <div>
+                        <p class="mb-0">
+                            Les informations de contact seront mis à disposition des acheteurs afin de leur permettre de vous contacter facilement.
+                        </p>
+                    </div>
+                </div>                  
             </div>
         </div>
-    </div>
+    </fieldset>
 
-    <div class="row mt-3 mt-lg-5 justify-content-end">
-        <div class="col-12 col-lg-auto px-5 px-lg-6">
-            <button type="submit" class="btn btn-primary btn-block">
-                <span>Enregistrer mes modifications</span>
-            </button>
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <hr>
+            <div class="form-row justify-content-end">
+                <div class="form-group col-12 col-lg-auto">
+                    <button type="submit" class="btn btn-block btn-primary">Enregistrer mes modifications</button>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-lg-4"></div>
-    </div>
+    </div>   
 </form>
 {% endblock %}

@@ -1,10 +1,10 @@
 {% comment %}
-    takes two arguments : fields and form_group_class
+    takes two arguments : form_field and form_group_class
 {% endcomment %}
 
 <div class="{% if form_group_class %}{{form_group_class}}{% else %}form-group{% endif %}">
     {{ form_field.label_tag }}
-    <ul class="list-unstyled mb-1">
+    <ul class="list-unstyled mb-1" id="id_{{ form_field.name }}">
         {% for pk, choice in form_field.field.widget.choices %}
         <li>
             <div class="custom-control custom-radio">

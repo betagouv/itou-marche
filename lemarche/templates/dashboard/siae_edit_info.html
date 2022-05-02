@@ -6,241 +6,258 @@
 {% endblock %}
 
 {% block content_siae_form %}
-<form method="POST" action="" class="mb-3 mb-lg-5">
+<form method="POST" action="" class="pt-3 pt-lg-5">
     {% csrf_token %}
 
     {% bootstrap_form_errors form type="all" %}
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    {% bootstrap_field form.description %}
+    <fieldset>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <legend>Présenter générale de votre structure et mission sociale</legend>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                {% bootstrap_field form.description %}
+                <div class="form-row">
                     <!-- Logo -->
-                    <div class="row">
-                        <div class="col-12 col-sm-6">
-                            <div class="form-group">
-                                {{ form.logo_url.as_hidden }}
-                                <label for="logo_form" class="js-display-if-javascript-enabled">Importez votre logo</label>
-                                {% include "storage/s3_upload_form.html" with dropzone_form_id="logo_form" %}
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <div class="form-group">
-                                <label>Logo actuel</label>
-                                {% if form.logo_url.value %}
-                                    <div>
-                                        <img class="img-fluid" src="{{ form.logo_url.value }}" />
-                                    </div>
-                                {% else %}
-                                    <span class="form-text text-muted">Aucun</span>
-                                {% endif %}
-                            </div>
+                    <div class="form-group col-md-9">
+                        {{ form.logo_url.as_hidden }}
+                        <label for="logo_form" class="js-display-if-javascript-enabled">Importez votre logo</label>
+                        {% include "storage/s3_upload_form.html" with dropzone_form_id="logo_form" %}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Logo actuel</label>
+                        <div>
+                            {% if form.logo_url.value %}
+                            <img class="img-fluid img-fitcover" src="{{ form.logo_url.value }}" />
+                            {% else %}
+                            <span class="text-muted">Aucun</span>
+                            {% endif %}
                         </div>
                     </div>
-                </fieldset>
+                </div>
             </div>
+            <div class="col-12 col-lg-4">
+                <div class="c-form-conseil">
+                    <div>
+                        <p class="mb-3"><u>Par exemple</u> : fonctionnement de la structure, savoir faire, historique, nombres de clients et mission sociale :</p>
+                        <ul class="mb-0">
+                            <li>Taux de sorties dynamiques</li>
+                            <li>Type de public accompagné (jeune, brsa, senior, réfugié ...)</li>
+                            <li>Parité femme/homme</li>
+                            <li>Heures de formations dispensées</li>
+                            <li>Actions réalisées sur le territoire en lien avec l'insertion professionnelles</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="form-group">
+                    {{ form.ca.label_tag }}
+                    <input type="number" min="0" id="{{ form.ca.auto_id }}" name="{{ form.ca.name }}" class="form-control" data-target-conseil="#{{ form.ca.name }}Conseil">
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="c-form-conseil">
+                    <div class="is-openable" id="{{ form.ca.name }}Conseil">
+                        <p>Votre chiffre d'affaire est un élément d'information important aux yeux des acheteurs.</p>
+                        <p>Il permet de rendre compte de votre dimension et de votre capacité à répondre à certains marchés et appels d'offres.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                {% bootstrap_field form.year_constitution show_label=True %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="form-group">
+                    {{ form.employees_insertion_count.label_tag }}
+                    <input type="number" min="0" id="{{ form.employees_insertion_count.auto_id }}" name="{{ form.employees_insertion_count.name }}" class="form-control" data-target-conseil="#{{ form.employees_insertion_count.name }}Conseil">
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="c-form-conseil">
+                    <div class="is-openable" id="{{ form.employees_insertion_count.name }}Conseil">
+                        <p>Le nombre de salariés en insertion démontre à la fois votre capacité de production et l'impact social de votre structure.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                {% bootstrap_field form.employees_permanent_count show_label=True %}
+            </div>
+        </div>
+
+    </fieldset>
+
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <hr>
         </div>
     </div>
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h5">Indiquez le chiffre d'affaire de votre structure</legend>
-                    {% bootstrap_field form.ca show_label=False %}
-                </fieldset>
+    <fieldset>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <legend>Labels et certifications</legend>
             </div>
         </div>
-        <div class="col-12 col-lg-4">
-            <div class="alert alert-info mt-3 mt-lg-0" role="alert">
-                <p class="mb-1">
-                    <i class="ri-information-line ri-lg"></i>
-                    <strong>Conseil</strong>
-                </p>
-                <p class="mb-0">
-                    Votre chiffre d'affaire est un élément d'information important aux yeux des acheteurs.
-                    Il permet de rendre compte de votre dimension et de votre capacité à répondre à certains marchés et appels d'offres.
-                </p>
-            </div>
-        </div>
-    </div>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                {% bootstrap_formset_errors label_formset %}
+                {% if label_formset.errors %}
+                <div class="alert alert-danger" role="status">{{ label_formset.errors }}</div>
+                {% endif %}
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h5">Année de création de votre structure</legend>
-                    {% bootstrap_field form.year_constitution show_label=False %}
-                </fieldset>
-            </div>
-        </div>
-    </div>
+                {% bootstrap_formset label_formset %}
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h5">{% get_verbose_name siae 'employees_insertion_count' %}</legend>
-                    {% bootstrap_field form.employees_insertion_count show_label=False %}
-                </fieldset>
-            </div>
-        </div>
-        <div class="col-12 col-lg-4">
-            <div class="alert alert-info mt-3 mt-lg-0" role="alert">
-                <p class="mb-1">
-                    <i class="ri-information-line ri-lg"></i>
-                    <strong>Conseil</strong>
-                </p>
-                <p class="mb-0">
-                    Le nombre de salariés en insertion démontre à la fois votre capacité de production et l'impact social de votre structure.
-                </p>
-            </div>
-        </div>
-    </div>
+                <div id="label-formset-empty-form" class="d-none">
+                    <hr class="my-3">
+                    {% bootstrap_form label_formset.empty_form %}
+                </div>
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h5">{% get_verbose_name siae 'employees_permanent_count' %}</legend>
-                    {% bootstrap_field form.employees_permanent_count show_label=False %}
-                </fieldset>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h4">Labels et certifications</legend>
-                    {% bootstrap_formset_errors label_formset %}
-                    {% if label_formset.errors %}
-                        <div class="alert alert-danger" role="alert">{{ label_formset.errors }}</div>
-                    {% endif %}
-
-                    {% bootstrap_formset label_formset %}
-
-                    <div id="label-formset-empty-form" class="d-none">{% bootstrap_form label_formset.empty_form %}</div>
-                    <button id="label-formset-add-more" class="btn btn-outline-primary btn-sm btn-ico float-right" type="button">
+                <div class="d-flex justify-content-end mb-3">
+                    <button id="label-formset-add-more" class="btn btn-link btn-sm btn-ico" type="button">
                         <span>Ajouter un label</span>
-                        <i class="ri-add-fill ri-lg"></i>
+                        <i class="ri-add-circle-line ri-lg font-weight-normal"></i>
                     </button>
-                </fieldset>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="c-form-conseil">
+                    <div>
+                        <p>
+                            Certains labels sont recherchés par nos acheteurs, c'est donc un plus de les rendre visible rapidement.<br />
+                            Exemples : RSEI, ISO 14001, Ecocert…
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-12 col-lg-4">
-            <div class="alert alert-info mt-3 mt-lg-0" role="alert">
-                <p class="mb-1">
-                    <i class="ri-information-line ri-lg"></i>
-                    <strong>Pourquoi mettre des labels ?</strong>
-                </p>
-                <p class="mb-0">
-                    Certains labels sont recherchés par nos acheteurs, c'est donc un plus de les rendre visible rapidement.<br />
-                    Exemples : RSEI, ISO 14001, Ecocert…
-                </p>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="form-group">
+                    <label for="">Label ou certification :</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-ico" type="button">
+                                <i class="ri-add-fill ri-lg"></i>
+                                <span>Ajouter</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="badge badge-sm badge-pill badge-emploi-light text-primary"><i class="ri-close-fill"></i>label</span>
+                        <span class="badge badge-sm badge-pill badge-emploi-light text-primary"><i class="ri-close-fill"></i>certification</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </fieldset>
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="siae-details-card align-items-start">
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <div class="bg-light p-3 my-3">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h1 class="h2 mb-3 mt-1">{{ siae.name_display }}</h1>
+                        <p class="h3">{{ siae.name_display }}</p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-6">
-                        <div class="row" title="{% get_verbose_name siae 'siret' %}">
-                            <div class="col-12 mb-3">
-                                <i class="ri-profile-line"></i>
+                    <div class="col-12 col-lg-6">
+                        <ul class="list-unstyled m-0">
+                            <li>
+                                <i class="ri-profile-line" title="{% get_verbose_name siae 'siret' %}"></i>
                                 <span>{{ siae.siret_display }}</span>
-                            </div>
-                        </div>
-                        <div class="row" title="{% get_verbose_name siae 'kind' %}">
-                            <div class="col-12 mb-3">
-                                <i class="ri-building-4-line"></i>
+                            </li>
+                            <li>
+                                <i class="ri-building-4-line" title="{% get_verbose_name siae 'kind' %}"></i>
                                 <span>{{ siae.get_kind_display }}</span>
-                            </div>
-                        </div>
-                        <div class="row" title="{% get_verbose_name siae 'address' %}">
-                            <div class="col-12 mb-3">
-                                <i class="ri-map-pin-line"></i>
+                            </li>
+                            <li>
+                                <i class="ri-map-pin-line" title="{% get_verbose_name siae 'address' %}"></i>
                                 <span>{{ siae.address }},</span>
                                 <span>{{ siae.post_code }},</span>
                                 <span>{{ siae.city }},</span>
                                 <span>{{ siae.department }},</span>
                                 <span>{{ siae.region }}</span>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="row" title="{% get_verbose_name siae 'api_entreprise_date_constitution' %}">
-                            <div class="col-12 mb-3">
+                    <div class="col-12 col-lg-6">
+                        <ul class="list-unstyled m-0">
+                            <li>
+                                <i class="ri-calendar-2-fill"></i>
                                 <span>Année de création :</span>
                                 <span>{{ siae.api_entreprise_date_constitution|date:"Y"|default:"" }}</span>
-                            </div>
-                        </div>
-                        <div class="row" title="{% get_verbose_name siae 'api_entreprise_employees' %}">
-                            <div class="col-12 mb-3">
-                                <span>{% if siae.kind == 'SEP' %}Travailleurs détenus{% else %}Salariés{% endif %} :</span>
+                            </li>
+                            <li>
+                                <i class="ri-group-line"></i>
+                                <span> {% if siae.kind == 'SEP' %}Travailleurs détenus{% else %} Salariés{% endif %} :</span>
                                 <span>{{ siae.api_entreprise_employees|default:"non disponible" }}</span>
-                            </div>
-                        </div>
-                        <div class="row" title="{% get_verbose_name siae 'api_entreprise_ca' %}">
-                            <div class="col-12 mb-3">
+                            </li>
+                            <li>
+                                <i class="ri-money-euro-circle-line"></i>
                                 <span>Chiffre d'affaire :</span>
                                 <span>{{ siae.api_entreprise_ca|default:"non disponible" }}</span>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 {% if siae.is_qpv or siae.is_zrr %}
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            {% if siae.is_qpv %}
-                                <div class="row" title="{% get_verbose_name siae 'is_qpv' %}">
-                                    <div class="col-12 mb-3">
-                                        <span>QPV : {{ siae.qpv_name }} ({{ siae.qpv_code }})</span>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if siae.is_zrr %}
-                                <div class="row" title="{% get_verbose_name siae 'is_zrr' %}">
-                                    <div class="col-12 mb-3">
-                                        <span>ZRR : {{ siae.zrr_name }} ({{ siae.zrr_code }})</span>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
+                <hr class="my-2">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        {% if siae.is_qpv %}
+                        <span title="{% get_verbose_name siae 'is_qpv' %}">QPV : {{ siae.qpv_name }} ({{ siae.qpv_code }})</span>
+                        {% endif %}
                     </div>
+                    <div class="col-12 col-lg-6">
+                        {% if siae.is_zrr %}
+                        <span title="{% get_verbose_name siae 'is_zrr' %}">ZRR : {{ siae.zrr_name }} ({{ siae.zrr_code }})</span>
+                        {% endif %}
+                    </div>
+                </div>
                 {% endif %}
             </div>
         </div>
-        <div class="col-12 col-lg-4">
-            <div class="alert alert-info mt-3 mt-lg-0" role="alert">
-                <p class="mb-1">
-                    <i class="ri-information-line ri-lg"></i>
-                    <strong>Conseil</strong>
-                </p>
-                <p class="mb-0">
-                    Toutes les informations affichées ici sont en provenance de {{ siae.source_display }} et de données ouvertes (API Entreprise, API QPV et API ZRR).
-                </p>
+        <div class="col-12 col-lg-5">
+            <div class="c-form-conseil">
+                <div>
+                    <p>
+                        Toutes les informations affichées ici sont en provenance de {{ siae.source_display }} et de données ouvertes (API Entreprise, API QPV et API ZRR).
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-3 mt-lg-5 justify-content-end">
-        <div class="col-12 col-lg-auto px-5 px-lg-6">
-            <button type="submit" class="btn btn-primary btn-block">
-                <span>Enregistrer mes modifications</span>
-            </button>
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <hr>
+            <div class="form-row justify-content-end">
+                <div class="form-group col-12 col-lg-auto">
+                    <button type="submit" class="btn btn-block btn-primary">Enregistrer mes modifications</button>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-lg-4"></div>
     </div>
+
 </form>
 {% endblock %}
 
@@ -250,40 +267,40 @@
 {{ s3_form_values_siae_logo|json_script:"s3-form-values-siae-logo" }}
 {{ s3_upload_config_siae_logo|json_script:"s3-upload-config-siae-logo" }}
 <script type="text/javascript">
-// init dropzone
-s3UploadInit({
-    dropzoneSelector: "#logo_form",
-    callbackLocationSelector: "#{{ form.logo_url.id_for_label }}",
-    s3FormValuesId: "s3-form-values-siae-logo",
-    s3UploadConfigId: "s3-upload-config-siae-logo",
-    // Not really nice
-    sentryInternalUrl: "{% url 'pages:sentry_debug' %}",
-    sentryCsrfToken: "{{ csrf_token }}"
-});
+    // init dropzone
+    s3UploadInit({
+        dropzoneSelector: "#logo_form",
+        callbackLocationSelector: "#{{ form.logo_url.id_for_label }}",
+        s3FormValuesId: "s3-form-values-siae-logo",
+        s3UploadConfigId: "s3-upload-config-siae-logo",
+        // Not really nice
+        sentryInternalUrl: "{% url 'pages:sentry_debug' %}",
+        sentryCsrfToken: "{{ csrf_token }}"
+    });
 </script>
 <script type="text/javascript">
-/**
- * Add formset items dynamically
- */
-const prefixRegex = new RegExp('__prefix__', 'g');
+    /**
+    * Add formset items dynamically
+    */
+    const prefixRegex = new RegExp('__prefix__', 'g');
 
-// label formset
-const labelIdString = 'id_labels';
-const labelFormsetString = 'label-formset';
-const totalLabelFormset = document.getElementById(`${labelIdString}-TOTAL_FORMS`);
-const labelFormsetEmptyForm = document.getElementById(`${labelFormsetString}-empty-form`);
-const labelFormsetAddMoreButton = document.getElementById(`${labelFormsetString}-add-more`);
+    // label formset
+    const labelIdString = 'id_labels';
+    const labelFormsetString = 'label-formset';
+    const totalLabelFormset = document.getElementById(`${labelIdString}-TOTAL_FORMS`);
+    const labelFormsetEmptyForm = document.getElementById(`${labelFormsetString}-empty-form`);
+    const labelFormsetAddMoreButton = document.getElementById(`${labelFormsetString}-add-more`);
 
-labelFormsetAddMoreButton.addEventListener('click', function(e) {
-    if (e) { e.preventDefault(); }
-    // add new form
-    const copyLabelFormsetEmptyForm = labelFormsetEmptyForm.cloneNode(true);
-    copyLabelFormsetEmptyForm.innerHTML = copyLabelFormsetEmptyForm.innerHTML.replace(prefixRegex, totalLabelFormset.value);
-    copyLabelFormsetEmptyForm.childNodes.forEach(node => {
-        labelFormsetEmptyForm.parentNode.insertBefore(node, labelFormsetEmptyForm);
+    labelFormsetAddMoreButton.addEventListener('click', function (e) {
+        if (e) { e.preventDefault(); }
+        // add new form
+        const copyLabelFormsetEmptyForm = labelFormsetEmptyForm.cloneNode(true);
+        copyLabelFormsetEmptyForm.innerHTML = copyLabelFormsetEmptyForm.innerHTML.replace(prefixRegex, totalLabelFormset.value);
+        copyLabelFormsetEmptyForm.childNodes.forEach(node => {
+            labelFormsetEmptyForm.parentNode.insertBefore(node, labelFormsetEmptyForm);
+        });
+        // update total forms count
+        totalLabelFormset.setAttribute('value', parseInt(totalLabelFormset.getAttribute('value'), 10) + 1);
     });
-    // update total forms count
-    totalLabelFormset.setAttribute('value', parseInt(totalLabelFormset.getAttribute('value'), 10) + 1);
-});
 </script>
 {% endblock %}

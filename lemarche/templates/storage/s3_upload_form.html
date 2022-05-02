@@ -1,20 +1,21 @@
 <!-- https://github.com/betagouv/itou/blob/master/itou/templates/storage/s3_upload_form.html -->
 
 <div class="js-display-if-javascript-enabled">
-    <div id="{{ dropzone_form_id }}" class="dropzone border-dashed text-center text-secondary mb-2">
-        <div class="dz-message my-1">
-            <div class="h5"><i class="ri-upload-2-line ri-2x"></i></div>
+    <div id="{{ dropzone_form_id }}" class="c-dropzone dz-clickable">
+        <div class="dz-message">
+            <p class="mb-1 text-nuance-06"><i class="ri-upload-cloud-2-line ri-2x"></i></p>
             <!-- Issue with refresh on client-reference js-generated form -->
-            <!-- <div class="h6"><a href="" class="js-prevent-default">Choisissez une image</a> ou <b>glissez ici</b>.</div> -->
-            <div class="h6"><span class="fake-link">Choisissez une image</span> ou <b>glissez ici</b>.</div>
-            <div class="small">Taille maximale : {{ s3_upload_config.max_file_size }} Mo</div>
-            <div class="small">Type de fichier : PNG, JPEG, SVG, GIF</div>
+            <p class="mb-2">Glisser vos fichiers ici ou <strong>rechercher</strong> dans vos fichiers</p>
+            <span class="btn btn-primary btn-sm mb-2">Rechercher dans vos fichiers</span>
+            <p class="small text-nuance-06">Taille maximale : {{ s3_upload_config.max_file_size }}  Mo</p>
         </a>
         </div>
     </div>
+    <p class="small text-muted mb-0">Type de fichier : PNG, JPEG, SVG, GIF</p>
 </div>
+  
 <noscript>
     <div class="alert alert-danger" role="status">
-        JavaScript n'est pas activé. Il est nécessaire de réactiver JavaScript pour activer la fonctionnalité d'ajout d'image.
+        <p class="mb-0">JavaScript n'est pas activé. Il est nécessaire de réactiver JavaScript pour activer la fonctionnalité d'ajout d'image.</p>
     </div>
 </noscript>

@@ -6,71 +6,98 @@
 {% endblock %}
 
 {% block content_siae_form %}
-<form method="POST" action="" class="mb-3 mb-lg-5">
+<form method="POST" action="" class="pt-3 pt-lg-5">
     {% csrf_token %}
 
     {% bootstrap_form_errors form type="all" %}
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h4">Appartenez-vous à un réseau ou une fédération ?</legend>
-                    {% bootstrap_field form.networks show_label=False %}
-                </fieldset>
+    <fieldset>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <legend>Appartenez-vous à un réseau ou une fédération ?</legend>
             </div>
         </div>
-    </div>
 
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h4">Êtes-vous ouvert à la co-traitance ou au groupement momentané d'entreprises (<a href="https://www.economie.gouv.fr/dae/groupement-momentane-dentreprises" target="_blank" rel="noopener">GME</a>) ?</legend>
-                    {% bootstrap_field form.is_cocontracting show_label=False %}
-                </fieldset>
-            </div>
-        </div>
-        <div class="col-12 col-lg-4">
-            <div class="alert alert-info mt-3 mt-lg-0" role="alert">
-                <p class="mb-1">
-                    <i class="ri-information-line ri-lg"></i>
-                    <strong>Co-traitance</strong>
-                </p>
-                <p class="mb-0">
-                    Vous êtes prêt à travailler avec une autre structure de l'insertion ou une entreprise du milieu ordinaire.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mb-3 mb-lg-5">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white d-block rounded-lg shadow-lg p-3 p-lg-5">
-                <fieldset>
-                    <legend class="h4">Appartenez-vous à un groupement ou ensemblier ?</legend>
-                    {% bootstrap_field form.groups show_label=False %}
-                </fieldset>
-                <div class="alert alert-warning mb-4" role="alert">
-                    <p class="mb-1">
-                        <i class="ri-information-line ri-lg"></i>
-                        <strong>Le groupement auquel vous appartenez n'apparaît pas dans la liste ?</strong>
-                    </p>
-                    <p class="mb-0">
-                        Ajoutez le en <a href="{{ TYPEFORM_GROUPEMENT_AJOUT }}#data=user_id:{{ user.id }}" id="siae-group-add" target="_blank" rel="noopener">remplissant le formulaire</a>.
-                    </p>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="form-group">
+                    <label for="{{ form.networks.auto_id }}">Réseau ou une fédération</label>
+                    {% bootstrap_field form.networks show_label="skip" %}
                 </div>
             </div>
         </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <hr>
+        </div>
     </div>
 
-    <div class="row mt-3 mt-lg-5 justify-content-end">
-        <div class="col-12 col-lg-auto px-5 px-lg-6">
-            <button type="submit" class="btn btn-primary btn-block">
-                <span>Enregistrer mes modifications</span>
-            </button>
+    <fieldset>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <legend>Êtes-vous ouvert à la co-traitance ou au groupement momentané d'entreprises (<a href="https://www.economie.gouv.fr/dae/groupement-momentane-dentreprises" target="_blank" rel="noopener">GME</a>) ?</legend>
+            </div>
         </div>
-        <div class="col-12 col-lg-4"></div>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                {% include "includes/forms/_bootstrap_field_radio.html" with form_field=form.is_cocontracting form_group_class="form-group" %}   
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="c-form-conseil">
+                    <div>
+                        <p class="mb-0">Vous êtes prêt à travailler avec une autre structure de l'insertion ou une entreprise du milieu ordinaire.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <hr>
+        </div>
+    </div>
+
+    <fieldset>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <legend>Appartenez-vous à un groupement ou ensemblier ?</legend>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="form-group">
+                    <label for="{{ form.groups.auto_id }}">Groupement ou ensemblier</label>
+                    {% bootstrap_field form.groups show_label="skip" %}
+                </div>
+                <div class="alert alert-info mb-4">
+                    <div class="row">
+                        <div class="col-auto pr-0">
+                            <i class="ri-information-line ri-xl text-info"></i>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0"><strong>Le groupement auquel vous appartenez n'apparaît pas dans la liste ?</strong></p>
+                            <p class="mb-0">
+                                Ajoutez le en <a href="{{ TYPEFORM_GROUPEMENT_AJOUT }}#data=user_id:{{ user.id }}" id="siae-group-add" target="_blank" rel="noopener" title="Remplissez le formulaire (lien externe)">remplissant le formulaire</a><i class="ri-external-link-line ml-1"></i>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <hr>
+            <div class="form-row justify-content-end">
+                <div class="form-group col-12 col-lg-auto">
+                    <button type="submit" class="btn btn-block btn-primary">Enregistrer mes modifications</button>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 {% endblock %}

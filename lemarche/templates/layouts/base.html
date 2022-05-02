@@ -2,117 +2,119 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8" />
-    <title>{% block title %} - Le marché de l'inclusion{% endblock %}</title>
-    {% block meta_description %}
-    <meta name="description" content="Le marché de l'inclusion est un service numérique permettant de trouver un prestataire sociale inclusif proposant des produits ou services professionnels.">
-    {% endblock %}
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="theme-color" content="#ffffff">
 
-    <!-- https://metatags.io Open Graph -->
-    <meta property="og:locale" content="fr_FR" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://lemarche.inclusion.beta.gouv.fr/" />
-    <meta property="og:image" content="{% static 'img/logo_metatags_marche.png' %}" />
-    <meta property="og:image:alt" content="Logo du marché de l'inclusion" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <!-- https://metatags.io Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://lemarche.inclusion.beta.gouv.fr/" />
-    <meta property="twitter:image" content="{% static 'img/logo_metatags_marche.png' %}" />
-    <meta property="twitter:site" content="inclusion_gouv" />
-    <!-- https://metatags.io Facebook -->
-    <meta property="fb:page_id" content="inclusion.gouv" />
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %} - Le marché de l'inclusion{% endblock %}</title>
+        {% block meta_description %}
+        <meta name="description" content="Le marché de l'inclusion est un service numérique permettant de trouver un prestataire sociale inclusif proposant des produits ou services professionnels.">
+        {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="theme-color" content="#ffffff">
 
-    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
-    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
-    <link rel="icon" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}" type="image/png">
-    <link rel="icon" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}" type="image/png">
-    <link rel="icon" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}" type="image/png">
-    <link rel="icon" sizes="256x256" href="{% static 'img/favicon-256x256.png' %}" type="image/png">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon-180x180.png' %}" type="image/png">
+        <!-- https://metatags.io Open Graph -->
+        <meta property="og:locale" content="fr_FR" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://lemarche.inclusion.beta.gouv.fr/" />
+        <meta property="og:image" content="{% static 'img/logo_metatags_marche.png' %}" />
+        <meta property="og:image:alt" content="Logo du marché de l'inclusion" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <!-- https://metatags.io Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://lemarche.inclusion.beta.gouv.fr/" />
+        <meta property="twitter:image" content="{% static 'img/logo_metatags_marche.png' %}" />
+        <meta property="twitter:site" content="inclusion_gouv" />
+        <!-- https://metatags.io Facebook -->
+        <meta property="fb:page_id" content="inclusion.gouv" />
 
-    <!-- Use this to get the value of the CSRF token in JavaScript. -->
-    <meta name="csrf-token" content="{{ csrf_token }}">
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+        <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
+        <link rel="icon" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}" type="image/png">
+        <link rel="icon" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}" type="image/png">
+        <link rel="icon" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}" type="image/png">
+        <link rel="icon" sizes="256x256" href="{% static 'img/favicon-256x256.png' %}" type="image/png">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon-180x180.png' %}" type="image/png">
 
-    <!-- itou theme -->
-    {% import_static_CSS_theme_inclusion %}
+        <!-- Use this to get the value of the CSRF token in JavaScript. -->
+        <meta name="csrf-token" content="{{ csrf_token }}">
 
-    {% compress css %}
-    <!-- third party css -->
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap-multiselect-1.1.1/bootstrap-multiselect.min.css' %}" type="text/css" />
-    <link rel="stylesheet" href="{% static 'vendor/alphagov-accessible-autocomplete-2.0.3/accessible-autocomplete.min.css' %}" type="text/css" />
-    <link rel="stylesheet" href="{% static 'vendor/leaflet-1.7.1/leaflet.css' %}" type="text/css" />
-    <!-- custom css -->
-    <link rel="stylesheet" href="{% static 'itou_marche/itou_marche.scss' %}" type="text/x-scss" />
-    {% endcompress %}
+        <!-- itou theme -->
+        {% import_static_CSS_theme_inclusion %}
 
-    {% block extra_css %}{% endblock %}
+        {% compress css %}
+        <!-- third party css -->
+        <link rel="stylesheet" href="{% static 'vendor/bootstrap-multiselect-1.1.1/bootstrap-multiselect.min.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'vendor/alphagov-accessible-autocomplete-2.0.3/accessible-autocomplete.min.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'vendor/leaflet-1.7.1/leaflet.css' %}" type="text/css" />
+        <!-- custom css -->
+        <link rel="stylesheet" href="{% static 'itou_marche/itou_marche.scss' %}" type="text/x-scss" />
+        {% endcompress %}
 
-    {% block extra_head %}{% endblock %}
-</head>
+        {% block extra_css %}{% endblock %}
 
-<body id="top" class="{% block body_class %}{% endblock %}">
-    <!-- allow a user to go to the main content of the page -->
-    <noscript>
-        <div class="alert alert-danger" role="status">
-            Javascript doit être activé pour pouvoir assurer l'affichage correct de la page (recherche géographique par exemple).
-        </div>
-    </noscript>
+        {% block extra_head %}{% endblock %}
+    </head>
 
-    <nav role="navigation" aria-label="Accès rapide" tabindex="1" class="sr-only">
-        <ul>
-            <li><a href="#nav-primary">Aller au menu principal</a></li>
-            <li><a href="#main">Aller au contenu principal</a></li>
-            {% if request.path == "/prestataires/" %}
+    <body id="top" class="{% block body_class %}{% endblock %}">
+        <!-- allow a user to go to the main content of the page -->
+        <noscript>
+            <div class="alert alert-danger" role="status">
+                Javascript doit être activé pour pouvoir assurer l'affichage correct de la page (recherche géographique par exemple).
+            </div>
+        </noscript>
+
+        <nav role="navigation" aria-label="Accès rapide" tabindex="1" class="sr-only">
+            <ul>
+                <li><a href="#nav-primary">Aller au menu principal</a></li>
+                <li><a href="#main">Aller au contenu principal</a></li>
+                {% if request.path == "/prestataires/" %}
                 <li><a href="#search-form">Aller à la recherche de structures de l’insertion et du handicap</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+                {% endif %}
+            </ul>
+        </nav>
 
-    {% block header %}
-      {% include "layouts/_header.html" %}
-    {% endblock %}
-
-    {% block sub_header %}{% endblock %}
-
-    <!-- contains main informative part of the site -->
-    <main id="main" role="main" class="s-main">
-        {% block breadcrumbs %}{% endblock %}
-
-        {% block messages %}
-            {% if messages %}
-                <section>
-                    <div class="container">
-                        <div class="row messages">
-                            <div class="col">
-                                {% include 'includes/_messages.html' %}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            {% endif %}
+        {% block header %}
+            {% include "layouts/_header.html" %}
         {% endblock %}
 
-        {% block content %}{% endblock %}
-    </main>
+        {% block sub_header %}{% endblock %}
 
-    {% block footer %}
-        {% include "layouts/_footer.html" %}
-    {% endblock %}
+        <!-- contains main informative part of the site -->
+        <main id="main" role="main" class="s-main">
+            {% block breadcrumbs %}{% endblock %}
 
-    <!-- popin -->
-    {% block modals %}{% endblock %}
+            {% block messages %}
+                {% if messages %}
+                    <section>
+                        <div class="container">
+                            <div class="row messages">
+                                <div class="col">
+                                    {% include 'includes/_messages.html' %}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                {% endif %}
+            {% endblock %}
 
-    <!-- allow a user to go to the top of the page -->
-    <div class="sr-only sr-only-focusable">
-        <a href="#header">retour au début de la page</a>
-    </div>
+            {% block content %}{% endblock %}
+        </main>
+
+        {% block footer %}
+            {% include "layouts/_footer.html" %}
+        {% endblock %}
+
+        <!-- popin -->
+        {% block modals %}{% endblock %}
+
+        <!-- allow a user to go to the top of the page -->
+        <div class="sr-only sr-only-focusable">
+            <a href="#header">retour au début de la page</a>
+        </div>
+
 
     {% block script %}
     <!-- itou theme -->
@@ -133,17 +135,18 @@
     {% if BITOUBI_ENV not in "dev" %}
         {% include "includes/_tracker_tarteaucitron.html" %}
         {% include "includes/_tracker_itou.html" %}
-    {% endif %}
-    {% comment "migrate first" %}
-    {% include '@CocoricoCore/Frontend/Common/_cookie_consent_js.html.twig' only %}
-    {% endcomment %}
-    {% if not user.is_authenticated %}
+        {% endif %}
+        {% comment "migrate first" %}
+        {% include '@CocoricoCore/Frontend/Common/_cookie_consent_js.html.twig' only %}
+        {% endcomment %}
+        {% if not user.is_authenticated %}
         <!-- Mailjet newsletter -->
         <data id="mj-w-res-data" data-token="0d87cc6eac81c8037144017a95fdecdb" class="mj-w-data" data-apikey="4guK" data-w-id="KAV" data-lang="fr_FR" data-base="https://app.mailjet.com" data-width="640" data-height="450" data-statics="statics"></data>
         <script type="text/javascript" type="text/javascript" src="https://app.mailjet.com/statics/js/widget.modal.js"></script>
-    {% endif %}
-    {% endblock %}
+        {% endif %}
+        {% endblock %}
 
-    {% block extra_js %}{% endblock %}
-</body>
+        {% block extra_js %}{% endblock %}
+    </body>
+
 </html>

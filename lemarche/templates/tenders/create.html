@@ -44,8 +44,8 @@
                         {% bootstrap_form_errors form type="all" %}
 
                         <fieldset>
-                            <legend>Informations générales</legend>
-                            {% bootstrap_field form.kind form_group_class="form-group form-group-required" %}
+                            <legend>Informations générales</legend>                           
+                            {% include "includes/forms/_bootstrap_field_radio.html" with form_field=form.kind form_group_class="form-group form-group-required" %}
                             {% bootstrap_field form.title placeholder="Ex: Rénovation de façade" form_group_class="form-group form-group-required" %}
                             {% bootstrap_field form.sectors form_group_class="form-group form-group-required use-multiselect" %}
                             <div class="form-group form-group-required{% if form.perimeters.errors %} is-invalid{% endif %}">
@@ -89,7 +89,7 @@
                                 {% bootstrap_field form.contact_email form_group_class="form-group col-12 col-md-6" %}
                                 {% bootstrap_field form.contact_phone form_group_class="form-group col-12 col-md-6" %}
                             </div>
-                            {% bootstrap_field form.response_kind %}
+                            {% include "includes/forms/_bootstrap_field_checkbox.html" with form_field=form.response_kind form_group_class="form-group form-group-required" %}
                             <div class="form-group form-group-required">
                                 {{ form.deadline_date.label_tag }}
                                 <div class="input-group">
