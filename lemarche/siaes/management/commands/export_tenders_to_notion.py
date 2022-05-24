@@ -100,6 +100,12 @@ class Command(BaseCommand):
                 self.get_date_conversion(tender.get("dateparution")),
                 self.get_date_conversion(tender.get("datefindiffusion")),
             ),
+            "Réservé": create_text_property(
+                "true"
+                if tender.get("OBJET", {}).get("MARCHE_RESERVE_OUI", False)
+                or tender.get("CONDITION_PARTICIPATION", {}).get("MARCHE_RESERVE_OUI", False)
+                else "false"
+            ),
             "Date de fin de diffusion": create_date_property(self.get_date_conversion(tender.get("datefindiffusion"))),
         }
         identity_tenders = tender.get("IDENTITE")
