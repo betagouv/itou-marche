@@ -82,7 +82,14 @@ if is_windows:
     GDAL_LIBRARY_PATH = "C:/OSGeo4W/bin/gdal304.dll"
 
 
-HUEY |= {
+HUEY |= {  # noqa F405
     "results": True,
     "store_none": True,
 }  # Huey implementation to use.
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    }
+}
