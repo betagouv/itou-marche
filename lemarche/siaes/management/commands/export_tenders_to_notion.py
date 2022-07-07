@@ -2,7 +2,7 @@ import argparse
 import json
 from datetime import datetime
 
-import httpx
+import requests
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
@@ -55,12 +55,13 @@ class Command(BaseCommand):
                         tender = self.export_tender_to_notion(client, tender)
                         tenders_to_export.append(tender)
                         count_tenders_to_export = len(tenders_to_export)
-                    except httpx.HTTPStatusError as e:
-                        if e.response.status_code == 429:
+                    except requests.exceptions.HTTPError as e:
+                        status_code = e.response.status_code
+                        if status_code == 429:
                             # the real exceed request error have code=10005, with the api
                             # but httpx send error code 429 "Unknown Status Code"
                             self.stdout_error("exceeded the requests limit for today (5000/per day)")
-                    except httpx.ReadTimeout:
+                    except requests.exceptions.ReadTimeout:
                         self.stdout_error("Readtimeout for this tender : ")
                         self.stdout_error(tender)
                     if (count_tenders_to_export % 50) == 0:

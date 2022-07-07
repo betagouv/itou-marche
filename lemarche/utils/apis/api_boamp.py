@@ -1,7 +1,7 @@
 import json
 import logging
 
-import httpx
+import requests
 
 
 logger = logging.getLogger(__name__)
@@ -47,7 +47,13 @@ def get_default_params():
 
 def get_default_client(params={}):
     params |= get_default_params()
-    client = httpx.Client(params=params)
+    headers = {
+        "user-agent": "betagouv-lemarche/0.0.1",
+    }
+    client = requests.Session()
+    client.params = params
+    client.headers = headers
+
     return client
 
 
@@ -72,7 +78,7 @@ def get_offers_list(client=None):
                 offer_saved["annonces_anterieures"] = json.loads(offer_saved.get("annonces_anterieures", "[]"))
                 saved_data.append(offer_saved)
 
-    except httpx.HTTPStatusError as e:
+    except requests.exceptions.HTTPError as e:
         logger.error("Error while fetching `%s`: %s", e.request.url, e)
 
     dump_to_json_file("offers_saved", saved_data)

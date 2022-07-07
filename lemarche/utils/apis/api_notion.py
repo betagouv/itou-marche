@@ -2,7 +2,7 @@ import json
 import logging
 from datetime import datetime
 
-import httpx
+import requests
 from django.conf import settings
 
 
@@ -27,11 +27,13 @@ def get_endpoint_url(endpoint):
 
 
 def get_default_client(params={}):
-    client = httpx.Client(params=params, headers=headers)
+    client = requests.Session()
+    client.params = params
+    client.headers = headers
     return client
 
 
-def createPage(databaseId, properties: dict, children: dict, client: httpx.Client = None):
+def createPage(databaseId, properties: dict, children: dict, client: requests.Session = None):
     if not client:
         client = get_default_client()
 
