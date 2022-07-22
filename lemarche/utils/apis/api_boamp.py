@@ -58,6 +58,7 @@ def get_default_client(params={}):
 
 
 def get_offers_list(client=None):
+    print(get_offers_list)
     if not client:
         client = get_default_client()
 
@@ -72,6 +73,7 @@ def get_offers_list(client=None):
         if records:
             # dump_to_json_file("all_offers", data)
             for offer in records:
+                print(offer)
                 offer_saved = offer.get("fields")
                 offer_saved |= json.loads(offer_saved.get("donnees", "[]"))
                 offer_saved |= json.loads(offer_saved.get("gestion", "[]"))
