@@ -22,73 +22,135 @@
 {% endblock %}
 
 {% block content %}
-<section class="pt-4 pb-6">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <!-- Mes structures -->
-                <div id="structures" class="row justify-content-end mb-3 mb-lg-5">
-                    <div class="col-12 col-lg">
-                        <h2 id="structures" class="h1 mb-0">
-                            <strong>{% if user.siaes.count > 1 %}Mes structures{% else %}Ma structure{% endif %}</strong>
-                        </h2>
-                    </div>
-                    <div class="col-12 col-md-auto">
-                        <a href="{% url 'dashboard:siae_search_by_siret' %}" class="btn btn-primary btn-block btn-ico">
-                            <span>Ajouter une structure</span>
-                            <i class="ri-add-fill ri-lg"></i>
-                        </a>
-                    </div>
-                </div>
-                {% if user.siaes.count > 0 %}
-                    <div class="s-cards-grid-01__row row row-cols-1 row-cols-md-2">
-                        {% for siaeuser in user.siaeuser_set.all %}
-                            {% include "dashboard/_siae_card_home.html" with siae=siaeuser.siae %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
 
-                <!-- Tenders -->
-                <hr class="mb-3 mb-lg-5">
-                <div id="tenders" class="row justify-content-end mb-3 mb-lg-5">
-                    <div class="col-12 col-lg">
-                        <h2 class="h1 mb-0">
-                            <strong>Trouver de nouvelles opportunités</strong>
-                        </h2>
-                    </div>
-                    <div class="col-12 col-md-auto">
-                        <a href="{% url 'tenders:list' %}" class="btn btn-outline-primary btn-block btn-ico">
-                            <span>Voir</span>
-                            <i class="ri-eye-line ri-lg"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Favoris -->
-                <hr class="mb-3 mb-lg-5">
-                <div id="favoris" class="row justify-content-end mb-3 mb-lg-5">
-                    <div class="col-12 col-lg">
-                        <h2 id="structures" class="h1 mb-0">
-                            <strong>Liste d'achat favoris</strong>
-                        </h2>
-                    </div>
-                    <div class="col-12 col-md-auto">
-                        <a href="{% url 'dashboard:profile_favorite_list' %}" class="btn btn-outline-primary btn-block btn-ico">
-                            <span>Voir</span>
-                            <i class="ri-eye-line ri-lg"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- API -->
-                {% if user.api_key %}
-                    <hr class="mb-3 mb-lg-5">
-                    {% include "dashboard/_api_key_row.html" with api_key=user.api_key %}
-                {% endif %}
+<section class="s-title-01">
+    <div class="s-title-01__container container">
+        <div class="s-title-01__row row">
+            <div class="s-title-01__col col-12">
+                <h1 class="s-title-01__title h1"><strong>Tableau de bord</strong></h1>
             </div>
         </div>
     </div>
 </section>
 
-{% include "dashboard/_aides_territoires_section.html" %}
+<section class="s-tabs-01 mb-5">
+    <div class="s-tabs-01__container container">
+        <div class="s-tabs-01__row row">
+            <div class="s-tabs-01__col col-12">
+                <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
+                    {% for siaeuser in user.siaeuser_set.all %}
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link {% if forloop.first %}active{% endif %}" id="{{ siaeuser.siae.slug }}-tab" data-toggle="tab" href="#{{ siaeuser.siae.slug }}" role="tab" aria-controls="{{ siaeuser.siae.slug }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                <span class="mr-2">
+                                    {% if siae.logo_url %}
+                                        <img class="img-fluid" style="width:20px" src="{{ siae.logo_url }}" alt="Logo de la structure {{ siae.name }}" loading="lazy" />
+                                    {% else %}
+                                        <img class="img-fluid" style="width:20px" src="{% static 'img/default-listing.png' %}" alt="{{ siae.name }}" loading="lazy" />
+                                    {% endif %}
+                                </span>
+                                <span>{{ siaeuser.siae.name_display }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="add-siae-btn" href="{% url 'dashboard:siae_search_by_siret' %}" aria-selected="false">
+                            <i class="ri-add-line"></i>
+                            <span>Ajouter une structure</span>
+                        </a>
+                    </li>
+                    <li class="nav-item-dropdown dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-toggle="dropdown" aria-expanded="false">...</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sTabs01DropdownMoreLink"></div>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    {% for siaeuser in user.siaeuser_set.all %}
+                        <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{ siaeuser.siae.slug }}" role="tabpanel" aria-labelledby="{{ siaeuser.siae.slug }}-tab">
+                            {% include "dashboard/_siae_tab_content.html" with siae=siaeuser.siae %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="s-section mb-0">
+    <div class="s-section__container container">
+        <div class="s-section__row row">
+            <div class="s-section__col col-12 col-lg-6 pb-5">
+                <div class="card h-100 w-100">
+                    <div class="card-body">
+                        <p class="h4 lh-sm">Les opportunités du marché</p>
+                        <p>
+                            Vous trouverez ici les devis, appels d'offre ou projets d'achat qui ont été déposés sur le marché
+                            et qui correspondent à vos secteurs d'activité et zone d'intervention.
+                        </p>
+                        <p>
+                            <span class="badge badge-sm badge-pill badge-important text-white">Nouvelles opportunités à consulter</span>
+                        </p>
+                        {% for tender in last_3_tenders %}
+                        <ul class="list-group list-group-flush list-group-link">
+                            <li class="list-group-item list-group-item-action">
+                                <div>
+                                    <time class="fs-sm d-block" aria-label="Date de clôture">{{ tender.deadline_date|default:"" }}</time>
+                                    <a href="{% url 'tenders:detail' tender.slug %}" class="d-block font-weight-bold stretched-link">{{ tender.title }}</a>
+                                </div>
+                            </li>
+                        </ul>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer pt-0 bg-white text-right">
+                        <a href="{% url 'tenders:list' %}" class="btn btn-link btn-ico">
+                            <span>Voir toutes les opportunités</span>
+                            <i class="ri-arrow-right-s-line ri-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="s-section__col col-12 col-lg-6 pb-5">
+                <div class="card h-100 w-100">
+                    <div class="card-body">
+                        <p class="h4 lh-sm">Solutions et ressources</p>
+                        {% for ressource in last_3_ressources %}
+                            <ul class="list-group list-group-flush list-group-link">
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="d-flex align-items-center">
+                                        <picture class="d-none d-lg-inline-flex mr-2">
+                                            <img src="https://via.placeholder.com/100x60" alt="">
+                                          </picture>
+                                        <div>
+                                            <time class="fs-sm d-block" aria-label="Date de publication">aaa {{ ressource.last_published_at }}</time>
+                                            <span class="d-block font-weight-bold">aaa {{ ressource.title }}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer pt-0 bg-white text-right">
+                        <a href="{{ ressource.url_path }}" class="btn btn-link btn-ico">
+                            <span>Voir toutes les ressources</span>
+                            <i class="ri-arrow-right-s-line ri-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if user.api_key %}
+<section class="s-section mt-0 mb-5">
+    <div class="s-section__container container">
+        <div class="s-section__row row">
+            <div class="col-12 col-lg-6">
+                {% include "dashboard/_api_key_card.html" with api_key=user.api_key %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% include "dashboard/_aides_territoires_section.html" with extra_class="pt-3" %}
 {% endblock %}

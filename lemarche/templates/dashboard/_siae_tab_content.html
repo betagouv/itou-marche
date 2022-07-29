@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="row">
+    <div class="col-12 col-md-7">
+        <div class="d-flex align-items-center mb-3">
+            <span class="mr-3">
+                {% if siae.logo_url %}
+                    <img class="img-fluid" style="width:50px" src="{{ siae.logo_url }}" alt="Logo de la structure {{ siae.name }}" loading="lazy" />
+                {% else %}
+                    <img class="img-fluid" style="width:50px" src="{% static 'img/default-listing.png' %}" alt="{{ siae.name }}" loading="lazy" />
+                {% endif %}
+            </span>
+            <h2 class="mb-0">{{ siae.name_display }}</h2>
+        </div>
+        {% include "includes/_completion_progress_bar.html" with completion_percent=siae.completion_percent %}
+        <a href="{% url 'dashboard:siae_edit' siae.slug %}" id="dashboard-siae-edit-btn" class="btn btn-primary btn-ico width-100 width-md-auto mt-3 mb-2 mb-md-0">
+            <i class="ri-pencil-fill ri-lg"></i>
+            <span>Compléter la fiche</span>
+        </a>
+    </div>
+    <div class="col-12 col-md-auto ml-auto d-flex flex-column">
+        <a href="{% url 'siae:detail' siae.slug %}" target="_blank" id="dashboard-siae-view-btn" class="btn btn-outline-primary btn-sm btn-ico mb-2">
+            <i class="ri-eye-line ri-lg"></i>
+            <span>Voir la fiche</span>
+        </a>
+        <a href="{% url 'dashboard:siae_edit' siae.slug %}" id="dashboard-siae-edit-btn" class="btn btn-outline-primary btn-sm btn-ico">
+            <i class="ri-group-line ri-lg"></i>
+            <span>Collaborateurs</span>
+        </a>
+    </div>
+</div>

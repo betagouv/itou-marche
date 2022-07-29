@@ -1,17 +1,6 @@
-<div id="api" class="row justify-content-end mb-3 mb-lg-5">
-    <div class="col-12 col-lg">
-        <h2 id="api" class="h1 mb-0">
-            <strong>Accès API</strong>
-        </h2>
-    </div>
-    <div class="col-12 col-md-auto">
-        <a href="{% url 'api:home' %}" class="btn btn-outline-primary btn-block btn-ico">
-            <span>📚 Tous les détails sur l'API</span>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12 col-md-6">
+<div class="card">
+    <div class="card-body">
+        <p class="h3 lh-sm">Accès API</p>
         <div class="form-group">
             <label>Votre token</label>
             <div class="input-group input-group-sm">
@@ -21,6 +10,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="card-footer bg-white pt-0">
+        <a href="{% url 'api:home' %}" class="btn btn-outline-primary btn-ico">
+            <span>Tous les détails sur l'API</span>
+        </a>
     </div>
 </div>
 

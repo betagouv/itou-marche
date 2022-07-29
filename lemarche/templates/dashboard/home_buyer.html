@@ -26,7 +26,6 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-
                 <!-- Tenders -->
                 <div id="tenders" class="row justify-content-end mb-3 mb-lg-5">
                     <div class="col-12 col-lg">
@@ -42,26 +41,12 @@
                     </div>
                 </div>
 
-                <!-- Favoris -->
-                <hr class="mb-3 mb-lg-5">
-                <div id="favoris" class="row justify-content-end mb-3 mb-lg-5">
-                    <div class="col-12 col-lg">
-                        <h2 id="structures" class="h1 mb-0">
-                            <strong>Liste d'achat favoris</strong>
-                        </h2>
-                    </div>
-                    <div class="col-12 col-md-auto">
-                        <a href="{% url 'dashboard:profile_favorite_list' %}" class="btn btn-outline-primary btn-block btn-ico">
-                            <span>Voir</span>
-                            <i class="ri-eye-line ri-lg"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- API -->
                 {% if user.api_key %}
-                    <hr class="mb-3 mb-lg-5">
-                    {% include "dashboard/_api_key_row.html" with api_key=user.api_key %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% include "dashboard/_api_key_card.html" with api_key=user.api_key %}
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>

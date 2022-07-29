@@ -9,8 +9,10 @@ from django.utils.safestring import mark_safe
 from django.views.generic import DeleteView, DetailView, ListView, UpdateView
 from django.views.generic.edit import CreateView, FormMixin
 
+from lemarche.cms.models import ArticlePage
 from lemarche.favorites.models import FavoriteItem, FavoriteList
 from lemarche.siaes.models import Siae, SiaeUser, SiaeUserRequest
+from lemarche.tenders.models import Tender
 from lemarche.users.models import User
 from lemarche.utils.s3 import S3Upload
 from lemarche.utils.tracker import extract_meta_from_request, track
@@ -53,6 +55,16 @@ class DashboardHomeView(LoginRequiredMixin, DetailView):
         if self.request.user.kind == User.KIND_SIAE:
             return ["dashboard/home_siae.html"]
         return ["dashboard/home_buyer.html"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.kind == User.KIND_SIAE:
+            siaes = self.request.user.siaes.all()
+            if siaes:
+                # context["last_3_tenders"] = Tender.objects.filter_with_siae(siaes).is_live()[:3]
+                context["last_3_tenders"] = Tender.objects.filter(tendersiae__siae__in=siaes).distinct()[:3]
+            context["last_3_ressources"] = ArticlePage.objects.all()[:3]
+        return context
 
 
 class ProfileEditView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
